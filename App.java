@@ -32,9 +32,11 @@ class IoBoundHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         CompletableFuture<Void> allRequestsCompleted = new CompletableFuture<>();
-
         ExecutorService executorService = Executors.newFixedThreadPool(10);
-        for (int i = 0; i < 10; i++) {
+
+        // TODO: Set number of concurrent request
+        int numberOfConcurrentRequest = 10;
+        for (int i = 0; i < numberOfConcurrentRequest; i++) {
             executorService.submit(() -> makeHttpRequest(allRequestsCompleted));
         }
         executorService.shutdown();
@@ -51,8 +53,9 @@ class IoBoundHandler implements HttpHandler {
 
     private void makeHttpRequest(CompletableFuture<Void> allRequestsCompleted) {
         try {
-            // Simulate a delay
-            Thread.sleep(3000);
+            // TODO: Set delay duration
+            int delay = 3000; //ms
+            Thread.sleep(delay);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
@@ -73,8 +76,11 @@ class CpuBoundHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         long sum = 0;
 
-        for (int i = 0; i < 100000; i++) {
-            for (int j = 0; j < 100000; j++) {
+        // TODO: Set duration of CPU-bound operation
+        long loopCount = 100000;
+
+        for (int i = 0; i < loopCount; i++) {
+            for (int j = 0; j < loopCount; j++) {
                 sum += i + j;
             }
         }
